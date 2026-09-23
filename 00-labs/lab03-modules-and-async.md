@@ -28,7 +28,7 @@ well-defined responsibility.
 
 Implement a function called **`readAndFilter()`** that performs the following:
 
-1. Reads the [liga.json](liga.json) file using `fs.promises.readFile`.
+1. Reads the [liga.json](liga.json) file using `readFile` of `fs/promises` module.
 2. Parses the file content from JSON into a JavaScript object or array using
    `JSON.parse`.
 3. Filters the teams and keeps only those whose number of goals scored
