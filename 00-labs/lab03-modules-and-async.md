@@ -112,7 +112,7 @@ JSON.stringify(titles, null, 2)
 animationTitles.json
 ```
 
-using `fs.promises.writeFile`.
+using `writeFile` of `fs/promises` module.
 
 ### Final Goal
 
