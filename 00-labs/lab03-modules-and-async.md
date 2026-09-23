@@ -42,7 +42,7 @@ Implement a function called **`saveResult()`** that:
 1. Receives the filtered array returned by `readAndFilter()`.
 2. Converts this array into JSON using `JSON.stringify(filteredTeams)`.
 3. Writes the result to a new file called **`liga10goals.json`** using
-   `fs.promises.writeFile`.
+   `writeFile` of `fs/promises` module.
 
 ### Final Goal
 
