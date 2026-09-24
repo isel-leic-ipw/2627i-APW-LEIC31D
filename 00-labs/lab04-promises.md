@@ -401,7 +401,7 @@ Expected output:
 
 ## Exercise 8 — Concurrent requests with `Promise.all()`
 
-Now create another implementation:
+Create another implementation:
 
 ```js
 function fetchMovieNames2(...ids) {
@@ -416,12 +416,25 @@ take advantage of
 The function must:
 
 1. Receive a variable number of movie IDs.
-2. Call `fetchMovieName(id)` for every supplied ID.
-3. Start the requests without waiting for the previous request to finish.
-4. **Do not** use `wait()` or the `500` ms delay from Exercise 7.
-5. Use `Promise.all()` to combine the resulting Promises.
+2. For each ID, wait `500` ms using the previous `wait(ms)` function.
+3. After the delay, call `fetchMovieName(id)`.
+4. Use `.map()` to create an array of Promises, one for each movie ID.
+5. Use `Promise.all()` to combine those Promises.
 6. Return a Promise that resolves to an array of movie names in the same order
    as the supplied IDs.
+
+Unlike Exercise 7, the Promises are created without waiting for the previous one
+to finish. Therefore, their `500` ms delays run concurrently.
+
+The execution should behave approximately like this:
+
+```text
+movie 6  → wait 500ms → fetch movie 6
+movie 22 → wait 500ms → fetch movie 22
+movie 7  → wait 500ms → fetch movie 7
+             │
+             └── delays happen concurrently
+```
 
 Test it with:
 
@@ -446,12 +459,11 @@ Expected output:
 Promise.all([promise1, promise2, promise3])
 ```
 
-It returns a new Promise that fulfills when **all** of the supplied Promises
+It returns a Promise that fulfills when **all** of the supplied Promises
 fulfill.
 
 The fulfilled value is an array containing their results in the **same order as
-the supplied Promises**, regardless of the order in which the individual
-operations finish.
+the supplied Promises**, regardless of the order in which they finish.
 
 If any supplied Promise rejects, the Promise returned by `Promise.all()` rejects
 with that error.
@@ -460,13 +472,10 @@ with that error.
 
 ### Questions
 
-After implementing both functions, compare them:
-
-1. In `fetchMovieNames()`, when does the second HTTP request start?
-2. In `fetchMovieNames2()`, when does the second HTTP request start?
-3. Does `Promise.all()` preserve the order of the results if the requests finish
+1. In Exercise 7, are the `500` ms waits sequential or concurrent?
+2. In Exercise 8, are the `500` ms waits sequential or concurrent?
+3. Approximately how long does the waiting portion take for three movies in each
+   implementation?
+4. Does `Promise.all()` preserve the order of the results if the requests finish
    in a different order?
-4. What happens to the Promise returned by `Promise.all()` if one
-   `fetchMovieName()` call rejects?
-5. Which implementation would be appropriate if an API requires requests to be
-   throttled?
+5. What happens if one `fetchMovieName()` call rejects?
