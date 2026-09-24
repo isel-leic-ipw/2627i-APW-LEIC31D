@@ -1,3 +1,5 @@
+# Lab 03 - Modularity and Asynchronous Programming – Promises
+
 # 1. Modularity – ECMAScript Modules
 
 Create a small program that demonstrates how to reuse functions through modules.

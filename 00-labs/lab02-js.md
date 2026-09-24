@@ -1,4 +1,4 @@
-# Lab 03 - JavaScript Exercises
+# Lab 02 - JavaScript Exercises
 
 Implement the following functions:
 
