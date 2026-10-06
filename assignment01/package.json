@@ -1,0 +1,15 @@
+{
+  "name": "apw-2627-a1-part1",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "mocha",
+    "test:chai": "mocha test/exercise1.test.mjs test/exercise2.test.mjs",
+    "test:assert": "mocha test/exercise*.assert.test.mjs"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^12.0.2"
+  }
+}
