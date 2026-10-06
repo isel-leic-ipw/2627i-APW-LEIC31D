@@ -291,6 +291,101 @@ console.log(obj.compute(10)); // Logs execution time, e.g, returns 20
 - Use `apply` to call the original method with the correct context and
   arguments.
 
+
 # Part 2 - Node application
 
-...
+## Foreword
+
+This part requires your code to make HTTP requests to the [RAWG Video Games Database API](https://api.rawg.io/docs/).
+
+Each student must obtain an API key from the [RAWG API page](https://rawg.io/apidocs). The key must be included in the `key` query parameter of every HTTP request. For example:
+
+```text
+https://api.rawg.io/api/games/3498?key=YOUR_API_KEY
+```
+
+The API key must not be hard-coded in the source code or committed to the repository. Read it from an environment variable instead. Be sure you understand and comply with the API terms and request limits.
+
+## Application requirements
+
+The application reads game IDs from a JSON file. A sample file is provided in the assignment repository with the following content:
+
+```json
+{
+  "game-ids": [
+    3498,
+    3328,
+    4200,
+    5286
+  ]
+}
+```
+
+For each ID, request the game details from `GET https://api.rawg.io/api/games/{id}`. The application must produce a JSON file containing each game's ID, name, Metacritic score, and platform names, as shown in the following example:
+
+```json
+{
+  "games": [
+    {
+      "id": 3498,
+      "name": "Grand Theft Auto V",
+      "score": 92,
+      "platforms": [
+        "PlayStation 5",
+        "Xbox Series S/X",
+        "PlayStation 3",
+        "PC",
+        "PlayStation 4",
+        "Xbox 360",
+        "Xbox One"
+      ]
+    },
+    {
+      "id": 3328,
+      "name": "The Witcher 3: Wild Hunt",
+      "score": 92,
+      "platforms": [
+        "PlayStation 5",
+        "Xbox Series S/X",
+        "macOS",
+        "PlayStation 4",
+        "Nintendo Switch",
+        "PC",
+        "Xbox One"
+      ]
+    },
+    {
+      "id": 4200,
+      "name": "Portal 2",
+      "score": 95,
+      "platforms": [
+        "PlayStation 3",
+        "PC",
+        "Xbox 360",
+        "Linux",
+        "macOS",
+        "Xbox One"
+      ]
+    },
+    {
+      "id": 5286,
+      "name": "Tomb Raider",
+      "score": 86,
+      "platforms": [
+        "PlayStation 3",
+        "Xbox 360",
+        "macOS",
+        "PC"
+      ]
+    }
+  ]
+}
+```
+
+Implement two versions of the application:
+
+1. Using Promises explicitly
+2. Using the async/await style
+
+REMARK: Students must handle request and file-system errors and consider the RAWG API request limits.
+
