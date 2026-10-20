@@ -1,66 +1,76 @@
 "use strict";
 
-function fetchBodySyze(uri) {
-  console.log("Fetching " + uri);
+function fetchBodySize(uri) {
+  console.log("Fetching " + uri)
   return fetch(uri)
     .then((resp) => resp.text())
     .then((body) => {
-      const size = body.length
-      console.log(size + " ---> " + uri);
-      return size;
+      console.log(" ----> " + uri)
+      return body.length;
     });
 }
-
+/**
+ * ALERT: we are ignoring the error case!
+ */
 function fetchAndSum(...uris) {
   const promises = []; // Array<Promise<number>>
   for (const uri of uris) {
-    promises.push(fetchBodySyze(uri));
+    const p = fetchBodySize(uri);
+    promises.push(p);
   }
   return new Promise((resolve, reject) => {
-    let count = 0; // Count received responses
-    let sum = 0; // accumulator that collects the sum of sizes
+    let sum = 0; // accumulates the sum of bodies responses length
+    let count = 0; // counts received respomses
     for (const p of promises) {
+      // accumulate results in sum as responses are received.
       p.then((size) => {
         sum += size;
         count++;
-        if (count == promises.length) {
-          // Quando tiver a soma dos sizes de todos os bodies
-          // => chamar resolve(soma)
-          resolve(sum);
+        if(count == promises.length) {
+          resolve(sum)
         }
       });
     }
   });
 }
 
+/**
+ * ALERT: we are ignoring the error case!
+ */
 async function asyncFetchAndSum(...uris) {
-  let sum = 0; // accumulator that collects the sum of sizes
+  let sum = 0; // accumulates the sum of bodies responses length
   for (const uri of uris) {
-    const size = await fetchBodySyze(uri)
+    const p = fetchBodySize(uri); // Promise<number>
+    const size = await p; // number
     sum += size;
   }
   return sum;
 }
 
+/**
+ * ALERT: we are ignoring the error case!
+ */
 async function asyncFetchAndSumConcurrent(...uris) {
-  const promises = []; // Array<Promise<number>>
+  const promises = []
   for (const uri of uris) {
-    promises.push(fetchBodySyze(uri));
+    const p = fetchBodySize(uri); // Promise<number>
+    promises.push(p)
   }
-  let sum = 0;
+  let sum = 0; // accumulates the sum of bodies responses length
   for (const p of promises) {
-    sum += await p
+    const size = await p;
+    sum += size;
   }
   return sum;
 }
 
 
 
-async function asyncFetchBodySyze(uri) {
+async function asyncFetchBodySize(uri) {
   const p = fetch(uri); // Promise<Response>
-  const resp = await p; // Response;
+  const resp = await p; // Response
   const body = await resp.text(); // String
-  return body.length;
+  return body.length; // number
 }
 
 asyncFetchAndSumConcurrent(
@@ -71,10 +81,11 @@ asyncFetchAndSumConcurrent(
   .catch((err) => console.log(err))
   .then((size) => console.log("Total size = " + size));
 
-// fetchBodySyze("https://developer.mozilla.org/en-US/").then((size) =>
-//   console.log("Body zise = " + size),
-// );
+// fetchBodySize("https://developer.mozilla.org/en-US/")
+//   .catch((err) => console.log(err))
+//   .then((size) => console.log("Total size = " + size));
 
-// asyncFetchBodySyze("https://developer.mozilla.org/en-US/").then((size) =>
-//   console.log("Body zise = " + size),
-// );
+// asyncFetchBodySize("https://developer.mozilla.org/en-US/")
+//   .catch((err) => console.log(err))
+//   .then((size) => console.log("Total size = " + size));
+
