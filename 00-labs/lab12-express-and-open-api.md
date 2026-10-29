@@ -2,9 +2,12 @@
 
 ## Student Management API – CRUD and API Documentation
 
-In the previous exercise, you developed a **Web API** using **Express** to manage students stored in an in-memory array.
+In the previous exercise, you developed a **Web API** using **Express** to
+manage students stored in an in-memory array.
 
-In this exercise, you will extend the API with **PUT** and **DELETE** operations, implement a request-counting middleware, and finally document it using **OpenAPI** and **Swagger UI**.
+In this exercise, you will extend the API with **PUT** and **DELETE**
+operations, implement a request-counting middleware, and finally document it
+using **OpenAPI** and **Swagger UI**.
 
 ### Part 1 – Update and Delete Students
 
@@ -17,7 +20,8 @@ Implement the following endpoints:
 
 **Requirements:**
 
-- **PUT** must receive both `name` and `number` in the JSON request body and update the corresponding student. The `id` must remain unchanged.
+- **PUT** must receive both `name` and `number` in the JSON request body and
+  update the corresponding student. The `id` must remain unchanged.
 - **DELETE** must remove the student with the specified ID.
 - Return appropriate HTTP status codes:
   - `200 OK` – Student successfully updated.
@@ -41,11 +45,13 @@ Content-Type: application/json
 
 ### Part 2 – Request Counter Middleware
 
-Create an Express middleware named `requestCounter` that counts the number of HTTP requests received by the API.
+Create an Express middleware named `requestCounter` that counts the number of
+HTTP requests received by the API.
 
 **Requirements:**
 
-1. Create a variable to store the total number of requests, initially set to `0`.
+1. Create a variable to store the total number of requests, initially set to
+   `0`.
 2. Implement the `requestCounter` middleware to:
    - Increment the counter for each incoming request.
    - Call `next()` to continue processing the request.
@@ -72,7 +78,8 @@ Create an Express middleware named `requestCounter` that counts the number of HT
 
 ### Part 3 – OpenAPI Specification
 
-Create a file named **`openapi.json`** containing the OpenAPI specification (version 3.0 or later) for the three endpoints listed below.
+Create a file named **`openapi.json`** containing the OpenAPI specification
+(version 3.0 or later) for the three endpoints listed below.
 
 Document these endpoints:
 
@@ -91,7 +98,8 @@ The specification include:
 
 ### Part 4 – Swagger UI
 
-Install **`swagger-ui-express`** and configure Express to load the `openapi.json` file.
+Install **`swagger-ui-express`** and configure Express to load the
+`openapi.json` file.
 
 Add the following endpoint:
 
@@ -103,7 +111,8 @@ The documentation must be accessible at:
 
 `http://localhost:3000/api-docs`
 
-Users must be able to explore and test the three documented API operations using Swagger UI.
+Users must be able to explore and test the three documented API operations using
+Swagger UI.
 
 ---
 
@@ -111,5 +120,6 @@ Users must be able to explore and test the three documented API operations using
 
 - Students and the request counter must remain stored in memory.
 - The server must run on port `3000`.
-- API responses must use JSON, except `204 No Content` and the Swagger UI interface.
+- API responses must use JSON, except `204 No Content` and the Swagger UI
+  interface.
 - Do not use a database.
