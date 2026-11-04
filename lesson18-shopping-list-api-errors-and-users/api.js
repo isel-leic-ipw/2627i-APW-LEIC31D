@@ -27,17 +27,30 @@ export function deleteList(req, res) {
 
 // Adds an item (`name`, `quantity`) to the list `listId` and returns the new
 // item id.
-export function createListItem(req, res) {
+export async function createListItem(req, res) {
   // 1. Extract the List Id from req.params
   // 2. Extract the (`name`, `quantity`) from req.body
+  if (!req.body)
+    return res.status(400).json({ message: "Missing body parameters." });
+  if (!req.params.listId)
+    return res
+      .status(400)
+      .json({ message: "Missing shopping list identifier." });
+  const { name, quantity } = req.body;
   // Validation on HTTP parameters:
-  // - Check if it has body.
   // - If the name is a string
   // - If the quantity is a Number
-  // TO DO: validations
-  const id = services.createListItem(req.params.listId, req.body.name, req.body.quantity);
-  // Send the response as:
-  //    { "id": "string" }
+  if (isNaN(quantity))
+    return res.status(400).json({ message: "Quantity should be a number" });
+  if (typeof name !== "string")
+    return res.status(400).json({ message: "Name should be a string" });
+
+  const id = await services.createListItem(
+    req.params.listId,
+    req.body.name,
+    req.body.quantity,
+  );
+  res.json({ id });
 }
 
 // Removes the item `itemId` from the list `listId`.

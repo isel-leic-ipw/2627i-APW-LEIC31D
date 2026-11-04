@@ -1,0 +1,48 @@
+@host = http://localhost:3000
+
+### 1. Missing body -> expected 400 "Missing body parameters."
+# No Content-Type and no body: express.json() leaves req.body undefined (Express 5)
+POST {{host}}/lists/1/items
+
+### 2. Quantity is not a number -> expected 400 "Quantity should be a number"
+POST {{host}}/lists/1/items
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "quantity": "abc"
+}
+
+### 3. Name is not a string -> expected 400 "Name should be a string"
+POST {{host}}/lists/1/items
+Content-Type: application/json
+
+{
+  "name": 123,
+  "quantity": 2
+}
+
+### 4. Missing quantity (isNaN(undefined) is true) -> expected 400 "Quantity should be a number"
+POST {{host}}/lists/1/items
+Content-Type: application/json
+
+{
+  "name": "Milk"
+}
+
+### 5. Missing name -> expected 400 "Name should be a string"
+POST {{host}}/lists/1/items
+Content-Type: application/json
+
+{
+  "quantity": 2
+}
+
+### 6. Valid request -> expected 200 with { "id": ... }
+POST {{host}}/lists/1/items
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "quantity": 2
+}
