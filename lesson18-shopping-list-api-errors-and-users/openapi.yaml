@@ -1,0 +1,174 @@
+openapi: 3.1.0
+info:
+  title: Shopping List API
+  version: 1.0.0
+  description: >-
+    API for managing shopping lists and their items. Error responses and
+    response representations beyond the returned identifiers are not specified
+    in the source endpoint description.
+paths:
+  /lists:
+    get:
+      operationId: getLists
+      summary: Get available shopping lists
+      responses:
+        "200":
+          description: The available shopping lists.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ShoppingList"
+    post:
+      operationId: createList
+      summary: Create a shopping list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateListRequest"
+      responses:
+        "201":
+          description: The shopping list was created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedResource"
+  /lists/{listId}:
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        description: Server-managed identifier of the shopping list.
+        schema:
+          type: string
+    put:
+      operationId: updateList
+      summary: Update a shopping list name
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateListRequest"
+      responses:
+        "204":
+          description: The shopping list was updated.
+    delete:
+      operationId: deleteList
+      summary: Delete a shopping list
+      responses:
+        "204":
+          description: The shopping list was deleted.
+  /lists/{listId}/items:
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        description: Identifier of the shopping list.
+        schema:
+          type: string
+    post:
+      operationId: createListItem
+      summary: Add an item to a shopping list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateListItemRequest"
+      responses:
+        "201":
+          description: The item was added to the shopping list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedResource"
+  /lists/{listId}/items/{itemId}:
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        description: Identifier of the shopping list.
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        required: true
+        description: Identifier of the shopping list item.
+        schema:
+          type: string
+    delete:
+      operationId: deleteListItem
+      summary: Remove an item from a shopping list
+      responses:
+        "204":
+          description: The item was removed from the shopping list.
+  /lists/{listId}/items/{itemId}/status:
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        description: Identifier of the shopping list.
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        required: true
+        description: Identifier of the shopping list item.
+        schema:
+          type: string
+    post:
+      operationId: toggleListItemStatus
+      summary: Toggle an item's bought status
+      description: Changes the item from pending to bought, or from bought to pending.
+      responses:
+        "204":
+          description: The item's status was changed.
+components:
+  schemas:
+    ShoppingList:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Server-managed shopping list identifier.
+        name:
+          type: string
+    CreateListRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    UpdateListRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    CreateListItemRequest:
+      type: object
+      required:
+        - name
+        - quantity
+      properties:
+        name:
+          type: string
+        quantity:
+          type: number
+    CreatedResource:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Server-managed identifier of the created resource.
