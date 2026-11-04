@@ -25,7 +25,7 @@ app.use((req, res, next) => {
     !req.headers.authorization || // 1. Check if the Authorization header exists.
     req.headers.authorization.indexOf("Bearer") < 0 // 2. Check if the Authorization scheme is Bearer
   )
-    return res.header(" WWW-Authenticate", "Bearer").status(401).send();
+    return res.header("WWW-Authenticate", "Bearer").status(401).send();
   // 3. Extract the token and get a valid user for that token.
   //   > If not send 401 with Invalid Token
   const arr = req.headers.authorization.split("Bearer ");
