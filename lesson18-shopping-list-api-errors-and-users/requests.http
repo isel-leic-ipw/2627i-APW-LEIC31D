@@ -46,3 +46,22 @@ Content-Type: application/json
   "name": "Milk",
   "quantity": 2
 }
+
+### 7. Invalid request -> with negative quantity
+POST {{host}}/lists/1/items
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "quantity": -7
+}
+
+
+### 8. Invalid request -> with an non-existent list
+POST {{host}}/lists/99/items
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "quantity": 11
+}

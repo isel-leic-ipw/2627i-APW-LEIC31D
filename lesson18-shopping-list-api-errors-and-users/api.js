@@ -27,7 +27,7 @@ export function deleteList(req, res) {
 
 // Adds an item (`name`, `quantity`) to the list `listId` and returns the new
 // item id.
-export async function createListItem(req, res) {
+export function createListItem(req, res) {
   // 1. Extract the List Id from req.params
   // 2. Extract the (`name`, `quantity`) from req.body
   if (!req.body)
@@ -45,12 +45,16 @@ export async function createListItem(req, res) {
   if (typeof name !== "string")
     return res.status(400).json({ message: "Name should be a string" });
 
-  const id = await services.createListItem(
-    req.params.listId,
-    req.body.name,
-    req.body.quantity,
-  );
-  res.json({ id });
+  services
+    .createListItem(req.params.listId, req.body.name, req.body.quantity)
+    .then((id) => res.json({ id }))
+    .catch(err => {
+      switch(err.code) {
+        case 1: return res.status(404).json(err.message);
+        case 2: return res.status(400).json(err.message);
+        default: return res.status(500).json(err.message);
+      }
+    })
 }
 
 // Removes the item `itemId` from the list `listId`.

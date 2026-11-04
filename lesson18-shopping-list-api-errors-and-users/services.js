@@ -50,9 +50,13 @@ export async function createListItem(listId, name, quantity) {
   // - Check if the quantity is greater than 0
   // If all validations pass then we will insert the Item in the List.
   const list = await data.getList(listId);
-  if (list === undefined) throw Error("There is no List with id: " + listId);
+  if (list === undefined)
+    throw { code: 1, message: "There is no List with id: " + listId };
   if (quantity <= 0)
-    throw Error("You cannot create items with quantity lower than 0");
+    throw {
+      code: 2,
+      message: "You cannot create items with quantity lower than 0",
+    };
   return data.createItem(listId, name, quantity);
 }
 
