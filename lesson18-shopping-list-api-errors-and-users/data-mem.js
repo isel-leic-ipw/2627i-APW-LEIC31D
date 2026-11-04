@@ -20,6 +20,7 @@
 const lists = {
   1: {
     id: "1",
+    userId: 2,
     name: "Groceries",
     items: {
       1: { id: "1", name: "Milk", quantity: 2, bought: false },
@@ -28,6 +29,7 @@ const lists = {
   },
   2: {
     id: "2",
+    userId: 2,
     name: "Party",
     items: {
       1: { id: "1", name: "Balloons", quantity: 20, bought: false },
@@ -37,6 +39,27 @@ const lists = {
 
 let nextListId = 3;
 const nextItemIds = { 1: 3, 2: 2 };
+
+const users = {
+  1: {
+    name: "Maria",
+    token: "jhqey7389rhhow",
+  },
+  2: {
+    name: "John",
+    token: "oy3rkjfhkshfdk",
+  },
+};
+
+export async function getUserByToken(token) {
+  for (const key of Object.keys(users)) {
+    const user = users[key];
+    if (user.token === token) {
+      // return {name: user.name, token: user.token, userId: key};
+      return {...user, userId: key};
+    }
+  }
+}
 
 /**
  * Returns all stored lists.
@@ -59,9 +82,10 @@ export async function getList(listId) {
 /**
  * Stores a new, empty list and assigns it an id.
  * @param {string} name Name of the new list.
+ * @param {number} userId Id of the user owning this list.
  * @returns {Promise<string>} Resolves with the id of the new list.
  */
-export async function createList(name) {
+export async function createList(name, userId) {
   const id = String(nextListId++);
   lists[id] = { id, name, items: {} };
   nextItemIds[id] = 1;

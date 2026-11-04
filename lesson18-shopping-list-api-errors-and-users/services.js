@@ -6,6 +6,10 @@ import * as data from "./data-mem.js";
  * @property {string} name Name of the list.
  */
 
+export function getUserByToken(token) {
+  return data.getUserByToken(token);
+}
+
 /**
  * Returns the available shopping lists.
  * @returns {Promise<ShoppingList[]>} Resolves with the available lists.
@@ -38,16 +42,18 @@ export function deleteList(listId) {}
 
 /**
  * Creates an item and inserts it in a shopping list.
+ * @param {user} user The user that should own the list with listId
  * @param {string} listId Identifier of the list that receives the item.
  * @param {string} name Name of the item.
  * @param {number} quantity Quantity of the item; must be greater than 0.
  * @returns {Promise<string>} Resolves with the id of the created item. Rejects
  * if the list does not exist or the quantity is not greater than 0.
  */
-export async function createListItem(listId, name, quantity) {
+export async function createListItem(user, listId, name, quantity) {
   // Validation on Domain logic:
   // - Check if that list with listId exist?
   // - Check if the quantity is greater than 0
+  // - Check if the list with listId belongs to the given user
   // If all validations pass then we will insert the Item in the List.
   const list = await data.getList(listId);
   if (list === undefined)
@@ -57,6 +63,20 @@ export async function createListItem(listId, name, quantity) {
       code: 2,
       message: "You cannot create items with quantity lower than 0",
     };
+  if(!user) {
+    throw {
+      code: 3,
+      message:
+        "Missing user.",
+    };
+  }
+  if (list.userId != user.userId) {
+    throw {
+      code: 4,
+      message:
+        "You cannot change a list that does not belong to the right user.",
+    };
+  }
   return data.createItem(listId, name, quantity);
 }
 

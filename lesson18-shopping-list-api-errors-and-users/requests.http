@@ -41,6 +41,7 @@ Content-Type: application/json
 ### 6. Valid request -> expected 200 with { "id": ... }
 POST {{host}}/lists/1/items
 Content-Type: application/json
+Authorization: Bearer oy3rkjfhkshfdk
 
 {
   "name": "Milk",

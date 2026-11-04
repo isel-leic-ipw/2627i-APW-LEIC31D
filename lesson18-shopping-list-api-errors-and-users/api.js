@@ -46,12 +46,13 @@ export function createListItem(req, res) {
     return res.status(400).json({ message: "Name should be a string" });
 
   services
-    .createListItem(req.params.listId, req.body.name, req.body.quantity)
+    .createListItem(req.user, req.params.listId, req.body.name, req.body.quantity)
     .then((id) => res.json({ id }))
     .catch(err => {
       switch(err.code) {
         case 1: return res.status(404).json(err.message);
         case 2: return res.status(400).json(err.message);
+        case 4: return res.status(401).json(err.message)      
         default: return res.status(500).json(err.message);
       }
     })
