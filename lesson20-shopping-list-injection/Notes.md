@@ -2,11 +2,12 @@ Dependency Injection
 
 ----> DEPENDENCY
 
+```
      -------------->
 index ---> api ----> services ----> data-mem
                               ----> unsplash-api.js --> HTTP fetch to unsplash
                                ----> unsplash-fake.js (with the same interface/functions) - Fakes
-
+```
 
 You require UNIT tests for non-http modules.
 You require UNIT tests for Domain, Services,
