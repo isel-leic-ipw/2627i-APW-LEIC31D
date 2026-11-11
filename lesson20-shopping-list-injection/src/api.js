@@ -1,4 +1,6 @@
-import * as services from "./services.js";
+import { getImageUri } from "./unsplash-fake.js"
+import { createServices } from "./services.js";
+const services = createServices(getImageUri)
 
 function notImplemented(req, res) {
   res.status(501).json({ error: "Not implemented" });

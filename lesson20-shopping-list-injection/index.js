@@ -3,7 +3,9 @@ import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import YAML from "yaml";
 import * as api from "./src/api.js";
-import * as services from "./src/services.js";
+import { getImageUri } from "./src/unsplash-fake.js"
+import { createServices } from "./src/services.js";
+const services = createServices(getImageUri)
 
 const file = fs.readFileSync("./openapi.yaml", "utf8");
 const openapiSpec = YAML.parse(file);

@@ -1,7 +1,7 @@
 @host = http://localhost:3000
 
 
-GET {{host}}/lists/2
+GET {{host}}/lists/1
 
 
 ### 1. Missing body -> expected 400 "Missing body parameters."
