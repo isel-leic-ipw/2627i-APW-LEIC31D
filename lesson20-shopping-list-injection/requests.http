@@ -1,5 +1,9 @@
 @host = http://localhost:3000
 
+
+GET {{host}}/lists/2
+
+
 ### 1. Missing body -> expected 400 "Missing body parameters."
 # No Content-Type and no body: express.json() leaves req.body undefined (Express 5)
 POST {{host}}/lists/1/items

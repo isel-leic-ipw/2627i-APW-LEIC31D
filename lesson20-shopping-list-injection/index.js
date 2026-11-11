@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 app.get("/lists", api.getLists);
+app.get("/lists/:listId", api.getListItems);
 
 // From here next endpoints require an Authenticated user
 app.use((req, res, next) => {

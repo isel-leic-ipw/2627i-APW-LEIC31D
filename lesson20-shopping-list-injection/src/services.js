@@ -1,5 +1,14 @@
 import * as data from "./data-mem.js";
+import { getImageUri } from "./unsplash-api.js";
 
+/**
+ * @typedef {Object} ListItem
+ * @property {string} id Item identifier, unique within its list.
+ * @property {string} name Name of the item.
+ * @property {number} quantity Quantity of the item.
+ * @property {boolean} bought Whether the item was already bought.
+ * @property {string} imageUri Uri for an image representing the item
+ */
 /**
  * @typedef {Object} ShoppingList
  * @property {string} id Server-managed list identifier.
@@ -15,6 +24,23 @@ export function getUserByToken(token) {
  * @returns {Promise<ShoppingList[]>} Resolves with the available lists.
  */
 export function getLists() {}
+
+/**
+ * @param {string} listId Identifier of the list to update.
+ * @returns {Promise<ListItem[]>} Resolves with the available items in the list.
+ */
+export async function getListItems(listId) {
+  const list = await data.getList(listId);
+  if (!list) {
+    throw new Error(`Shopping list ${listId} was not found.`);
+  }
+  return Promise.all(
+    Object.values(list.items).map(async (item) => {
+      const imageUri = await getImageUri(item.name);
+      return { ...item, uri: imageUri };
+    }),
+  );
+}
 
 /**
  * Creates a new shopping list.
@@ -63,11 +89,10 @@ export async function createListItem(user, listId, name, quantity) {
       code: 2,
       message: "You cannot create items with quantity lower than 0",
     };
-  if(!user) {
+  if (!user) {
     throw {
       code: 3,
-      message:
-        "Missing user.",
+      message: "Missing user.",
     };
   }
   if (list.userId != user.userId) {

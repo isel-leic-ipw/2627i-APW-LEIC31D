@@ -9,6 +9,18 @@ export function getLists(req, res) {
   notImplemented(req, res);
 }
 
+// Returns the items of the given list
+export function getListItems(req, res) {
+  if (!req.params.listId)
+    return res
+      .status(400)
+      .json({ message: "Missing shopping list identifier." });
+  services
+    .getListItems(req.params.listId)
+    .then((items) => res.json(items))
+    .catch((err) => res.status(400).json(err.message));
+}
+
 // Creates a new shopping list from the body `name` and returns its
 // server-generated id.
 export function createList(req, res) {
@@ -46,16 +58,25 @@ export function createListItem(req, res) {
     return res.status(400).json({ message: "Name should be a string" });
 
   services
-    .createListItem(req.user, req.params.listId, req.body.name, req.body.quantity)
+    .createListItem(
+      req.user,
+      req.params.listId,
+      req.body.name,
+      req.body.quantity,
+    )
     .then((id) => res.json({ id }))
-    .catch(err => {
-      switch(err.code) {
-        case 1: return res.status(404).json(err.message);
-        case 2: return res.status(400).json(err.message);
-        case 4: return res.status(401).json(err.message)      
-        default: return res.status(500).json(err.message);
+    .catch((err) => {
+      switch (err.code) {
+        case 1:
+          return res.status(404).json(err.message);
+        case 2:
+          return res.status(400).json(err.message);
+        case 4:
+          return res.status(401).json(err.message);
+        default:
+          return res.status(500).json(err.message);
       }
-    })
+    });
 }
 
 // Removes the item `itemId` from the list `listId`.
