@@ -205,7 +205,7 @@ app.get('/', (req, res) => {
 Add a second route:
 
 ```javascript
-app.get('/product/:id', (req, res) => {
+app.get('/products/:id', (req, res) => {
   const product = products.find(
     item => item.id === Number(req.params.id)
   )
@@ -218,7 +218,7 @@ app.get('/product/:id', (req, res) => {
 ```
 
 **Ex. 3.2** - Create `views/product.hbs` and display the product or a not-found
-message. Visit `/product/1`, `/product/2`, and an unknown product URL to test
+message. Visit `/products/1`, `/products/2`, and an unknown product URL to test
 both outcomes.
 
 ## 4. Conditions and lists
@@ -246,7 +246,7 @@ the current item:
 
 ### Exercise 4.1 - Render the product catalogue
 
-Change the `/` route to pass the complete array:
+**Ex. 4.1** - Change the `/` route to pass the complete array:
 
 ```javascript
 res.render('home', {
@@ -264,7 +264,7 @@ Update `home.hbs`:
   <ul>
     {{#each products}}
       <li>
-        <a href="/product/{{id}}">{{name}}</a>
+        <a href="/products/{{id}}">{{name}}</a>
         - {{price}}
         {{#if inStock}}
           <strong>In stock</strong>
@@ -279,7 +279,7 @@ Update `home.hbs`:
 {{/if}}
 ```
 
-Add a not-found block to `product.hbs`:
+**Ex. 4.2** - Add a not-found block to `product.hbs`:
 
 ```handlebars
 {{#if product}}
@@ -305,7 +305,7 @@ Use `../` to access the parent context.
 
 ### Exercise 5.1 - Use `with`
 
-Replace the product data block in `product.hbs` with `#with`.
+**Ex. 5.1** - Replace the product data block in `product.hbs` with `#with`.
 
 Add a route value:
 
@@ -351,7 +351,7 @@ The submitted values are available in `req.body`.
 
 ### Exercise 6.1 - Add a product
 
-Add the middleware before the routes.
+**Ex. 6.1** - Add the middleware before the routes.
 
 Add a form to `home.hbs`:
 
@@ -397,13 +397,16 @@ app.post('/products', (req, res) => {
 })
 ```
 
-Update `home.hbs` to display `{{error}}` when it exists.
+**Ex. 6.2** - Update `home.hbs` to display `{{error}}` when it exists.
 
 This route validates submitted values before changing the in-memory array.
 
 ## 7. Partials
 
 A partial is a reusable Handlebars template. Configure the partial directory:
+
+**Ex. 7.1** - Configure the partial directory and create the navigation
+partial.
 
 ```javascript
 app.engine('handlebars', engine({
@@ -436,11 +439,11 @@ Add `{{> navigation}}` to `main.hbs`.
 
 ### Exercise 7.2 - Create a product partial
 
-Create `views/partials/product.hbs`:
+**Ex. 7.2** - Create `views/partials/product.hbs`:
 
 ```handlebars
 <li>
-  <a href="/product/{{id}}">{{name}}</a>
+  <a href="/products/{{id}}">{{name}}</a>
   - {{price}}
 </li>
 ```
@@ -474,7 +477,8 @@ Keep validation and data preparation in JavaScript route or service code.
 
 ### Exercise 8.1 - Format prices
 
-Register a `formatPrice` helper in the existing Handlebars engine configuration:
+**Ex. 8.1** - Register a `formatPrice` helper in the existing Handlebars
+engine configuration:
 
 ```javascript
 app.engine('hbs', engine({
@@ -493,13 +497,13 @@ app.engine('hbs', engine({
 }))
 ```
 
-Use it in the catalogue and product views:
+**Ex. 8.2** - Use the helper in the catalogue and product views:
 
 ```handlebars
 {{formatPrice price}}
 ```
 
-Create a helper named `pluralize` that receives a count and a singular and
+**Ex. 8.3** - Create a helper named `pluralize` that receives a count and a singular and
 plural word:
 
 ```handlebars
@@ -528,35 +532,8 @@ The layout can link to the file:
 
 ### Exercise 9.1 - Style the catalogue
 
-Enable static files in `app.js`.
+**Ex. 9.1** - Enable static files in `app.js`.
 
 Create `public/style.css` and link it in `main.hbs`.
 
 Style the navigation, form, product list and unavailable state.
-
-## 10. Final exercise
-
-Complete the application with the following requirements:
-
-1. The `/` route displays all products.
-2. The `/product/:id` route displays one product or a not-found view.
-3. The `POST /products` route creates an in-memory product.
-4. Submitted names are trimmed.
-5. Invalid prices are rejected.
-6. The catalogue and product detail pages use a shared layout.
-7. Navigation is implemented as a partial.
-8. Product entries are implemented as a partial.
-9. Prices are formatted with a custom helper.
-10. At least one conditional and one array iteration are used.
-11. A CSS file is served from the `public` directory.
-
-Restart the server and test:
-
-- An empty product name.
-- A negative price.
-- A product name containing HTML.
-- A valid product submission.
-- An unknown product URL.
-
-The server-side templates must remain responsible for presentation. Validation
-and state changes remain in Express route code.
