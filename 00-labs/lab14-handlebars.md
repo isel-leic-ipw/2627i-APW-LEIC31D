@@ -64,7 +64,8 @@ Run it:
 node template-demo.js
 ```
 
-**Change the values in the context and confirm that the output changes.**
+**Ex. 1.1** - Change the values in the context and confirm that the output
+changes.
 
 ## 2. Configure Express
 
@@ -149,6 +150,9 @@ The layout provides the common HTML document. In this example, both the layout
 and view receive `title` from `res.render()`, and `{{{body}}}` is replaced by
 the HTML rendered from `home.hbs`.
 
+**Ex. 2.1** - Change the title `Product catalogue` in the route. Reload the
+page and observe the change in both the browser tab and the page heading.
+
 ## 3. Pass and display data
 
 An Express route passes data to `res.render()`:
@@ -195,7 +199,8 @@ app.get('/', (req, res) => {
 })
 ```
 
-Update `home.hbs` to display the product name and price.
+**Ex. 3.1** - Update `home.hbs` to display the product name and price. Reload
+`/` and confirm that the first product's details are shown.
 
 Add a second route:
 
@@ -212,8 +217,9 @@ app.get('/product/:id', (req, res) => {
 })
 ```
 
-Create `views/product.hbs` and display the product or a not-found
-message.
+**Ex. 3.2** - Create `views/product.hbs` and display the product or a not-found
+message. Visit `/product/1`, `/product/2`, and an unknown product URL to test
+both outcomes.
 
 ## 4. Conditions and lists
 
@@ -238,7 +244,7 @@ the current item:
 {{/each}}
 ```
 
-### Exercise 4.1 - Render the catalogue
+### Exercise 4.1 - Render the product catalogue
 
 Change the `/` route to pass the complete array:
 
@@ -428,6 +434,8 @@ Create `views/partials/navigation.hbs`:
 
 Add `{{> navigation}}` to `main.hbs`.
 
+### Exercise 7.2 - Create a product partial
+
 Create `views/partials/product.hbs`:
 
 ```handlebars
@@ -466,10 +474,11 @@ Keep validation and data preparation in JavaScript route or service code.
 
 ### Exercise 8.1 - Format prices
 
-Register a `formatPrice` helper:
+Register a `formatPrice` helper in the existing Handlebars engine configuration:
 
 ```javascript
-app.engine('handlebars', engine({
+app.engine('hbs', engine({
+  extname: '.hbs',
   defaultLayout: 'main',
   layoutsDir: './views/layouts',
   partialsDir: './views/partials',
